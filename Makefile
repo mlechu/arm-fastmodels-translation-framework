@@ -6,7 +6,7 @@
 
 # Set the build directory
 BUILD_DIR := $(CURDIR)/build
-SOURCE_DIR := $(CURDIR)/src
+SOURCE_DIR := $(CURDIR)/framework
 
 # compiler flags
 CC      := g++
@@ -80,7 +80,7 @@ $(BUILD_DIR)/include/%.hpp: $(SOURCE_DIR)/%.hpp
 all: $(FRAMEWORK_LIB)
 
 format:
-	find src -regex '.*\.\(cpp\|hpp\)' -exec clang-format -style=file -i {} \;
+	find $(SOURCE_DIR) -regex '.*\.\(cpp\|hpp\)' -exec clang-format -style=file -i {} \;
 
 # clean up
 clean:
