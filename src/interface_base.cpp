@@ -8,8 +8,8 @@
 
 #include <assert.h>
 
-#include <framework/logging.hpp>
-#include <framework/interface_base.hpp>
+#include "logging.hpp"
+#include "interface_base.hpp"
 
 
 InterfaceBase::InterfaceBase(StateBase *state)

@@ -8,8 +8,8 @@
 
 #include <string.h>
 
-#include <framework/logging.hpp>
-#include <framework/register_base.hpp>
+#include "logging.hpp"
+#include "register_base.hpp"
 
 
 RegisterBase::RegisterBase(std::string name, lpaddr_t addr, uint8_t width, access_perms_t perms,

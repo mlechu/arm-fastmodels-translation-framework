@@ -8,9 +8,9 @@
 
 #include <assert.h>
 
-#include <framework/logging.hpp>
-#include <framework/types.hpp>
-#include <framework/state_field_base.hpp>
+#include "logging.hpp"
+#include "types.hpp"
+#include "state_field_base.hpp"
 
 
 StateFieldBase::StateFieldBase(std::string name, uint8_t nbits, uint64_t reset_value)
@@ -81,7 +81,7 @@ bool StateFieldBase::add_slice(const std::string &name, uint8_t start, uint8_t e
 }
 
 
-bool StateFieldBase::get_slice_value(const std::string &name, uint64_t *value)
+uint64_t StateFieldBase::get_slice_value(const std::string &name)
 {
     if (!this->_slices.contains(name)) {
         Logging::error("StateFieldBase::get_slice_value: slice %s does not exist\n", name);
@@ -94,16 +94,14 @@ bool StateFieldBase::get_slice_value(const std::string &name, uint64_t *value)
     // need to handle the 64-bit case (second = 63, first = 0)
     uint8_t nbits = (slice.second - slice.first + 1);
     if (nbits == this->_bitwidth) {
-        *value = this->_value & this->_mask;
+        return this->_value & this->_mask;
     } else {
         assert(nbits < 64);
         uint64_t slice_mask = (1ULL << nbits) - 1;
 
         // extract the slice
-        *value = (this->_value >> slice.first) & (slice_mask);
+        return (this->_value >> slice.first) & (slice_mask);
     }
-
-    return true;
 }
 
 bool StateFieldBase::set_slice_value(const std::string &name, uint64_t value)

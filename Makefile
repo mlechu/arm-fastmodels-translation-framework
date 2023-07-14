@@ -33,14 +33,14 @@ FRAMEWORK_SRCS += $(SOURCE_DIR)/register_base.cpp
 FRAMEWORK_SRCS += $(SOURCE_DIR)/logging.cpp
 
 # Include Files
-FRAMEWORK_HDRS := $(SOURCE_DIR)/include/framework/accessmode.hpp
-FRAMEWORK_HDRS += $(SOURCE_DIR)/include/framework/logging.hpp
-FRAMEWORK_HDRS += $(SOURCE_DIR)/include/framework/state_base.hpp
-FRAMEWORK_HDRS += $(SOURCE_DIR)/include/framework/translation_unit_base.hpp
-FRAMEWORK_HDRS += $(SOURCE_DIR)/include/framework/interface_base.hpp
-FRAMEWORK_HDRS += $(SOURCE_DIR)/include/framework/register_base.hpp
-FRAMEWORK_HDRS += $(SOURCE_DIR)/include/framework/state_field_base.hpp
-FRAMEWORK_HDRS += $(SOURCE_DIR)/include/framework/types.hpp
+FRAMEWORK_HDRS := $(SOURCE_DIR)/include/accessmode.hpp
+FRAMEWORK_HDRS += $(SOURCE_DIR)/include/logging.hpp
+FRAMEWORK_HDRS += $(SOURCE_DIR)/include/state_base.hpp
+FRAMEWORK_HDRS += $(SOURCE_DIR)/include/translation_unit_base.hpp
+FRAMEWORK_HDRS += $(SOURCE_DIR)/include/interface_base.hpp
+FRAMEWORK_HDRS += $(SOURCE_DIR)/include/register_base.hpp
+FRAMEWORK_HDRS += $(SOURCE_DIR)/include/state_field_base.hpp
+FRAMEWORK_HDRS += $(SOURCE_DIR)/include/types.hpp
 
 
 # Object Files
@@ -51,8 +51,6 @@ FRAMEWORK_INCS := $(FRAMEWORK_HDRS:$(SOURCE_DIR)/%.hpp=$(BUILD_DIR)/%.hpp)
 
 # Library
 FRAMEWORK_LIB  := $(BUILD_DIR)/lib/libframework.a
-
-
 
 # building the library
 $(FRAMEWORK_LIB): $(FRAMEWORK_OBJS)
@@ -72,7 +70,7 @@ $(BUILD_DIR)/objs/%.o: $(SOURCE_DIR)/%.cpp
 	$(MKDIR) $(@D)
 	$(CC) $(CCFLAGS) -c -o $@ $<
 
-$(BUILD_DIR)/include/%.hpp: $(SOURCE_DIR)/include/%.hpp
+$(BUILD_DIR)/include/%.hpp: $(SOURCE_DIR)/%.hpp
 	$(MKDIR) $(@D)
 	cp $< $@
 

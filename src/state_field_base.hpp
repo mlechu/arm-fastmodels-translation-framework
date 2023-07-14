@@ -83,7 +83,7 @@ public:
     /**
      * @brief obtains the current value in the state field
      *
-     * @return  the value of the field
+     * @return the value of the field
      */
     uint64_t get_value(void)
     {
@@ -102,11 +102,10 @@ public:
      * @brief obtains the current value in the state field
      *
      * @param[in] name   name of the field
-     * @param[in] value  pointer to where to store the field value
      *
-     * @return true if the field value has been updated successfully
+     * @return the value of the slice
      */
-    bool get_slice_value(const std::string &name, uint64_t *value);
+    uint64_t get_slice_value(const std::string &name);
 
 
     /**
@@ -147,7 +146,7 @@ private:
     uint64_t _mask;
 
     ///< represents the slice map: slice name -> [start, end]
-    std::map<std::string, std::pair<uint8_t, uint8_t>> _slices;
+    std::map<std::string, std::pair<uint8_t, uint8_t> > _slices;
 };
 
 #endif /* _STATE_FIELD_BASE_H_ */

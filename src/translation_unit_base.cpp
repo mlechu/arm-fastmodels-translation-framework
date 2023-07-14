@@ -9,9 +9,9 @@
 #include "pv/PVBusMaster.h"
 #include "pv/PVAccessWidth.h"
 
-#include <framework/translation_unit_base.hpp>
-#include <framework/interface_base.hpp>
-#include <framework/logging.hpp>
+#include "translation_unit_base.hpp"
+#include "interface_base.hpp"
+#include "logging.hpp"
 
 /*
  * -------------------------------------------------------------------------------------------

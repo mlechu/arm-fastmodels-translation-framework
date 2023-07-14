@@ -8,7 +8,7 @@
 
 #include <cstdio>
 #include <stdlib.h> /* exit, EXIT_FAILURE */
-#include <framework/logging.hpp>
+#include "logging.hpp"
 
 bool     Logging::enabled = false;
 LogLevel Logging::level   = LOG_LEVEL_DEFAULT;

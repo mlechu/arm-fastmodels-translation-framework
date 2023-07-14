@@ -8,9 +8,9 @@
 
 #include <assert.h>
 
-#include <framework/logging.hpp>
-#include <framework/types.hpp>
-#include <framework/state_base.hpp>
+#include "logging.hpp"
+#include "types.hpp"
+#include "state_base.hpp"
 
 
 StateBase::StateBase()
@@ -95,24 +95,3 @@ bool StateBase::set_field_value(const std::string &name, uint64_t value)
     return false;
 }
 
-
-bool StateBase::get_slice_value(const std::string &name, const std::string &slice, uint64_t *value)
-{
-    if (this->_fields.contains(name)) {
-        auto field = this->_fields.at(name);
-        return field->get_slice_value(slice, value);
-    }
-    Logging::error("StateBase::set_field_value: field %s does not exist\n", name);
-    return false;
-}
-
-
-bool StateBase::set_slice_value(const std::string &name, const std::string &slice, uint64_t value)
-{
-    if (this->_fields.contains(name)) {
-        auto field = this->_fields.at(name);
-        return field->set_slice_value(slice, value);
-    }
-    Logging::error("StateBase::set_field_value: field %s does not exist\n", name);
-    return false;
-}

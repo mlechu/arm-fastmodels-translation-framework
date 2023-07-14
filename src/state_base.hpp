@@ -13,7 +13,7 @@
 #include <vector>
 #include <string>
 
-#include <framework/state_field_base.hpp>
+#include "state_field_base.hpp"
 
 class StateBase {
 public:
@@ -85,37 +85,6 @@ public:
      * @returns true if the field value has been updated successfully
      */
     bool set_field_value(const std::string &name, uint64_t value);
-
-
-    /*
-     * -------------------------------------------------------------------------------------------
-     * Slices
-     * -------------------------------------------------------------------------------------------
-     */
-
-
-    /**
-     * @brief obtains a slice in a field
-     *
-     * @param[in] name    name of the field
-     * @param[in] slice   slice name to extract
-     * @param[out] value  returns the value of the slice
-     *
-     * @returns true if the slice of the field has been updated
-     */
-    bool get_slice_value(const std::string &name, const std::string &slice, uint64_t *value);
-
-
-    /**
-     * @brief updates a slice in a field
-     *
-     * @param[in] name    name of the field
-     * @param[in] slice   slice name to extract
-     * @param[out] value  returns the value of the slice
-     *
-     * @returns true if the slice of the field has been updated
-     */
-    bool set_slice_value(const std::string &name, const std::string &slice, uint64_t value);
 
 protected:
     /**

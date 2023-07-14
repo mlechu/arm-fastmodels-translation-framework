@@ -12,9 +12,9 @@
 
 #include <string>
 
-#include <framework/types.hpp>
-#include <framework/accessmode.hpp>
-#include <framework/state_base.hpp>
+#include "types.hpp"
+#include "accessmode.hpp"
+#include "state_base.hpp"
 
 /**
  * @brief The RegisterBase class representing a configuration space register
