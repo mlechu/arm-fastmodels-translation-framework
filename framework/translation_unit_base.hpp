@@ -202,8 +202,7 @@ private:
      *
      * @returns true if the translation was successful, false otherwise
      */
-    virtual bool do_translate(lvaddr_t src_addr, size_t size, access_mode_t mode,
-                              lpaddr_t *dst_addr)
+    virtual bool do_translate(lvaddr_t src_addr, lpaddr_t *dst_addr)
         = 0;
 
 
