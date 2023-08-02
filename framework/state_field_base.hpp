@@ -28,15 +28,15 @@ public:
     /**
      * @brief constructs a default state field
      */
-    StateFieldBase(std::string name, uint8_t nbits = 64, uint64_t reset_value = 0);
+    StateFieldBase(std::string name, uint8_t nbits = 64, uint64_t init_val = 0);
 
 
     /**
-     * performs a rest on the field
+     * @brief performs a reset on the field
      */
     void reset(void)
     {
-        this->_value = this->_reset_value;
+        this->value = this->reset_value;
     }
 
     /*
@@ -65,7 +65,7 @@ public:
      */
     const std::string &get_name(void) const
     {
-        return this->_name;
+        return this->name;
     }
 
 
@@ -77,7 +77,7 @@ public:
      */
     void set_value(uint64_t value)
     {
-        this->_value = value & this->_mask;
+        this->value = value & this->mask;
     }
 
     /**
@@ -87,7 +87,7 @@ public:
      */
     uint64_t get_value(void)
     {
-        return this->_value;
+        return this->value;
     }
 
 
@@ -129,22 +129,25 @@ public:
     bool add_slice(const std::string &name, uint8_t start, uint8_t end);
 
 
-private:
     ///< the name of the field
-    std::string _name;
+    std::string name;
+
+    ///< offset relative to the base address of the state
+    uint64_t offset;
 
     ///< represents the current value of the field
-    uint64_t _value;
+    uint64_t value;
 
     ///< represents the reset value of the field
-    uint64_t _reset_value;
+    uint64_t reset_value;
 
     ///< represents the width of the field in bits
-    uint8_t _bitwidth;
+    uint8_t bitwidth;
 
     ///< the mask for this filed
-    uint64_t _mask;
+    uint64_t mask;
 
+private:
     ///< represents the slice map: slice name -> [start, end]
     std::map<std::string, std::pair<uint8_t, uint8_t> > _slices;
 };

@@ -13,21 +13,21 @@
 #include "state_field_base.hpp"
 
 
-StateFieldBase::StateFieldBase(std::string name, uint8_t nbits, uint64_t reset_value)
+StateFieldBase::StateFieldBase(std::string name, uint8_t nbits, uint64_t init_val)
 {
     if (nbits < 64) {
-        this->_bitwidth = nbits;
-        this->_mask     = (1ULL << nbits) - 1;
+        this->bitwidth = nbits;
+        this->mask     = (1ULL << nbits) - 1;
     } else {
         if (nbits > 64) {
             Logging::warn("StateFieldBase::StateFieldBase: bitwidth too large. Setting to 64\n");
         }
-        this->_bitwidth = 64;
-        this->_mask     = ~(0ULL);
+        this->bitwidth = 64;
+        this->mask     = ~(0ULL);
     }
-    this->_name        = name;
-    this->_reset_value = reset_value & this->_mask;
-    this->_value       = reset_value & this->_mask;
+    this->name        = name;
+    this->reset_value = init_val & this->mask;
+    this->value       = init_val & this->mask;
 
     this->_slices = std::map<std::string, std::pair<uint8_t, uint8_t>>();
 }
@@ -35,8 +35,8 @@ StateFieldBase::StateFieldBase(std::string name, uint8_t nbits, uint64_t reset_v
 
 void StateFieldBase::print_field(void)
 {
-    Logging::info("% 16s     % 2u    0x%016lx    (0x%llx)", this->_name.c_str(), this->_bitwidth,
-                  this->_value, this->_reset_value);
+    Logging::info("% 16s     % 2u    0x%016lx    (0x%llx)", this->name.c_str(), this->bitwidth,
+                  this->value, this->reset_value);
 }
 
 bool StateFieldBase::add_slice(const std::string &name, uint8_t start, uint8_t end)
@@ -52,7 +52,7 @@ bool StateFieldBase::add_slice(const std::string &name, uint8_t start, uint8_t e
     }
 
     // taking >= here, as the end bit is (N-1) for a bitwidth of N
-    if (end >= this->_bitwidth) {
+    if (end >= this->bitwidth) {
         Logging::error("StateFieldBase::add_slice: end > bitwidth\n");
         return false;
     }
@@ -93,14 +93,14 @@ uint64_t StateFieldBase::get_slice_value(const std::string &name)
 
     // need to handle the 64-bit case (second = 63, first = 0)
     uint8_t nbits = (slice.second - slice.first + 1);
-    if (nbits == this->_bitwidth) {
-        return this->_value & this->_mask;
+    if (nbits == this->bitwidth) {
+        return this->value & this->mask;
     } else {
         assert(nbits < 64);
         uint64_t slice_mask = (1ULL << nbits) - 1;
 
         // extract the slice
-        return (this->_value >> slice.first) & (slice_mask);
+        return (this->value >> slice.first) & (slice_mask);
     }
 }
 
@@ -116,14 +116,14 @@ bool StateFieldBase::set_slice_value(const std::string &name, uint64_t value)
 
     // need to handle the 64-bit case (second = 63, first = 0)
     uint8_t nbits = (slice.second - slice.first + 1);
-    if (nbits == this->_bitwidth) {
-        this->_value = value & this->_mask;
+    if (nbits == this->bitwidth) {
+        this->value = value & this->mask;
     } else {
         assert(nbits < 64);
         uint64_t slice_mask = (1ULL << nbits) - 1;
 
         // update the slice value
-        this->_value = (this->_value & ~(slice_mask << slice.first))
+        this->value = (this->value & ~(slice_mask << slice.first))
                        | ((value & slice_mask) << slice.first);
     }
 

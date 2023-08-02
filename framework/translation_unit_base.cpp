@@ -12,6 +12,7 @@
 #include "translation_unit_base.hpp"
 #include "interface_base.hpp"
 #include "logging.hpp"
+#include <streambuf>
 
 /*
  * -------------------------------------------------------------------------------------------
@@ -264,11 +265,11 @@ DVM::error_response_t TranslationUnitBase::handle_dvm_msg(DVM::Message *msg, boo
  */
 
 
-bool TranslationUnitBase::translation_table_walk(lpaddr_t addr, uint8_t width, uint64_t *data)
+bool TranslationUnitBase::read_paddr(lpaddr_t paddr, uint8_t width, uint64_t *data)
 {
     pv::AccessWidth access_width;
 
-    Logging::debug("TranslationUnitBase::translation_table_walk(0x%lx, %u)", addr, width);
+    Logging::debug("TranslationUnitBase::translation_table_walk(0x%lx, %u)", paddr, width);
     if (this->_ttw_pvbus == nullptr) {
         Logging::error("TranslationUnitBase::translation_table_walk - no page walker set!");
         return false;
@@ -293,9 +294,23 @@ bool TranslationUnitBase::translation_table_walk(lpaddr_t addr, uint8_t width, u
     // a new ACE request
     pv::ACERequest req = pv::ACERequest();
 
-    // do the translaction
-    pv::Tx_Result res = this->_ttw_pvbus->read(&ta, &req, (pv::bus_addr_t)addr, &bt);
+    // do the translation
+    pv::Tx_Result res = this->_ttw_pvbus->read(&ta, &req, (pv::bus_addr_t)paddr, &bt);
 
     // return success
     return res.isOK();
+}
+
+// A bit of a hack. We need read_paddr to do this.
+// State should be declared in the same place as the unit.
+
+void TranslationUnitBase::populate_state(lpaddr_t base) {
+    StateBase *state = this->get_state();
+    uint64_t temp;
+
+    for (auto it = state->fields.begin(); it != state->fields.end(); it++) {
+        auto f = it->second;
+        read_paddr(base + f->offset, f->bitwidth, &temp);
+        f->set_value(temp);
+    }
 }

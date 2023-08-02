@@ -48,6 +48,7 @@ public:
      * constructor of the translation unit
      */
     TranslationUnitBase(std::string const                     &name,
+                        lpaddr_t                              base,
                         pv::RandomContextTransactionGenerator *ptw_pvbus = nullptr,
                         lvaddr_t                               range_min = DEFAULT_RANGE_MIN,
                         lvaddr_t                               range_max = DEFAULT_RANGE_MAX)
@@ -189,7 +190,14 @@ public:
      * @param[in]  width  the amount of bits to read
      * @param[out] data   returns the read data
      */
-    bool translation_table_walk(lpaddr_t addr, uint8_t width, uint64_t *data);
+    bool read_paddr(lpaddr_t addr, uint8_t width, uint64_t *data);
+
+    /**
+     * @brief Fills the state given a base address
+     *
+     * @param[in]  base   the address to read from
+     */
+    void populate_state(lpaddr_t base);
 
 private:
     /**
@@ -205,9 +213,10 @@ private:
     virtual bool do_translate(lvaddr_t src_addr, lpaddr_t *dst_addr)
         = 0;
 
-
-    ///< the name of the unit
     std::string _name;
+
+    ///< base address
+    lpaddr_t base;
 
     ///< the minimum address supported by this translation unit
     lvaddr_t _inaddr_range_min;

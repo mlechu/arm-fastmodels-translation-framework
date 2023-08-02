@@ -86,6 +86,9 @@ public:
      */
     bool set_field_value(const std::string &name, uint64_t value);
 
+    ///< stores a map between field names and field objects
+    std::map<std::string, StateFieldBase *> fields;
+
 protected:
     /**
      * @brief adds a field to the state
@@ -95,10 +98,6 @@ protected:
      * @returns true if the field was added, false if the field already exists
      */
     bool add_field(StateFieldBase *field);
-
-private:
-    ///< stores a map between field names and field objects
-    std::map<std::string, StateFieldBase *> _fields;
 };
 
 #endif /* _STATE_BASE_H_ */
