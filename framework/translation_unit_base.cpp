@@ -238,7 +238,7 @@ unsigned TranslationUnitBase::handle_remap(pv::RemapRequest &req, unsigned *unpr
     req.setOnceOnly();
 
     lpaddr_t dst;
-    bool     r = this->do_translate(addr, &dst);
+    bool     r = this->translate(addr, &dst);
     if (!r) {
         Logging::info("TranslationUnitBase::handle_remap() - translation failed");
         return 1;
@@ -304,13 +304,13 @@ bool TranslationUnitBase::read_paddr(lpaddr_t paddr, uint8_t width, uint64_t *da
 // A bit of a hack. We need read_paddr to do this.
 // State should be declared in the same place as the unit.
 
-void TranslationUnitBase::populate_state(lpaddr_t base) {
+void TranslationUnitBase::populate_state() {
     StateBase *state = this->get_state();
     uint64_t temp;
 
     for (auto it = state->fields.begin(); it != state->fields.end(); it++) {
         auto f = it->second;
-        read_paddr(base + f->offset, f->bitwidth, &temp);
+        read_paddr(this->base + f->offset, f->bitwidth, &temp);
         f->set_value(temp);
     }
 }

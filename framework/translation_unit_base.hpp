@@ -47,12 +47,13 @@ public:
     /**
      * constructor of the translation unit
      */
-    TranslationUnitBase(std::string const                     &name,
-                        lpaddr_t                              base,
+    TranslationUnitBase(lpaddr_t                              base,
+                        std::string const                     &name,
                         pv::RandomContextTransactionGenerator *ptw_pvbus = nullptr,
                         lvaddr_t                               range_min = DEFAULT_RANGE_MIN,
                         lvaddr_t                               range_max = DEFAULT_RANGE_MAX)
-        : _name(name)
+        : base(base)
+        , _name(name)
         , _inaddr_range_min(range_min)
         , _inaddr_range_max(range_max)
         , _ttw_pvbus(ptw_pvbus)
@@ -184,7 +185,7 @@ public:
 
 
     /**
-     * @brief performs a translation table walk
+     * @brief reads from physical memory
      *
      * @param[in]  addr   the address to read from
      * @param[in]  width  the amount of bits to read
@@ -197,26 +198,25 @@ public:
      *
      * @param[in]  base   the address to read from
      */
-    void populate_state(lpaddr_t base);
+    void populate_state();
 
-private:
+    ///< base address
+    lpaddr_t base;
+
+  private:
+
     /**
-     * @brief translates the address
-     *
-     * @param[in] src_addr   the source virtual address to be translated
+     * @param[in] src_addr   the virtual address to be translated
      * @param[in] size       the size of the translation request
      * @param[in] mode       access mode of the request
      * @param[out] dst_addr  the translated address
      *
      * @returns true if the translation was successful, false otherwise
      */
-    virtual bool do_translate(lvaddr_t src_addr, lpaddr_t *dst_addr)
+    virtual bool translate(lvaddr_t src_addr, lpaddr_t *dst_addr)
         = 0;
 
     std::string _name;
-
-    ///< base address
-    lpaddr_t base;
 
     ///< the minimum address supported by this translation unit
     lvaddr_t _inaddr_range_min;
